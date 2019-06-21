@@ -1,7 +1,7 @@
 <template>
   <div class="field day-selector-container" v-click-outside="onClickOutsideDateSelector">                
     <div class="control has-icons-left">              
-      <input class="input" @keyup.esc="onInputEscape" placeholder="M-D-YYYY" v-model="dateForTextbox" @focus="isSelectorVisible=true">              
+      <input class="input" @keyup.esc="onInputEscape" @keydown.tab="onInputTab" placeholder="M-D-YYYY" v-model="dateForTextbox" @focus="isSelectorVisible=true">              
       <span class="icon is-small is-left">
         <i class="fa fa-calendar"></i>
       </span>                  
@@ -55,6 +55,11 @@ export default class DayPicker extends Vue {
   }
 
   private onInputEscape(){
+    console.log('yo yo');
+    this.isSelectorVisible = false;
+  }
+
+  private onInputTab(){    
     this.isSelectorVisible = false;
   }
 }

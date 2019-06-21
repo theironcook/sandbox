@@ -40,8 +40,16 @@
               </div>
 
               <day-picker :selectedDate="selectedDate" @update:selectedDate="selectedDate=$event"/>
-              <br>
-              {{selectedDate}}
+              
+              <div class="field">
+                <label class="label">Field One</label>
+                <div class="control has-icons-left">
+                  <input class="input" placeholder="field one" required v-model="fieldOne">
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
             </form>
           </div>                                   
             
@@ -54,7 +62,9 @@
 <script lang="ts">
 import { ClickOutside } from '@/directive';
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { StoreType } from '@/store/types';
 import DayPicker from '@/components/DayPicker.vue';
+import { Bindable } from '@/decorator/Bindable';
 import moment from 'moment';
 
 @Component({
@@ -63,6 +73,10 @@ import moment from 'moment';
 export default class Three extends Vue {
 
   private selectedDate = moment(); // default to today
+
+
+  @Bindable('exampleStore')//StoreType.ExampleStore)
+  private fieldOne!: string;
 
 }
 </script>
