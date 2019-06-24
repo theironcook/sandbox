@@ -20,5 +20,9 @@ export const mutations: MutationTree<CoreState> = {
 
   delete(state: CoreState, model: Example) {    
     coreMutations.delete(state, model);
+  },
+
+  updateSelectedCopy(state: CoreState, tuple: {propName: string, value: any}) {    
+    coreMutations.updateSelectedCopy(state, tuple);
   }
 };

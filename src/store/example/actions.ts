@@ -16,12 +16,20 @@ export const actions: ActionTree<CoreState, RootState> = {
     return coreActions.fetchModels({commit, state}, {ids, preCommit});
   },
 
-  fetchModelsByFilter({commit, state}, {filter, preCommit}: {filter?: string, preCommit?: Function} = {}): Promise<Model[]>{
+  fetchModelsByFilter({commit, state}, {filter, preCommit}: {filter: string, preCommit?: Function}): Promise<Model[]>{
     return coreActions.fetchModelsByFilter({commit, state}, {filter, preCommit});
   },
 
   delete({commit, state}, model: Example): Promise<void> {
     return coreActions.delete({commit, state}, model);
+  },
+
+  select({commit, state}, selected: Example): Promise<void> {
+    return coreActions.select({commit, state}, selected);
+  },
+
+  updateSelectedCopy({commit, state}, tuple: {propName: string, value: any}) : Promise<void> {
+    return coreActions.updateSelectedCopy({commit, state}, tuple);
   }
   
 };

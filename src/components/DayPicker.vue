@@ -31,7 +31,7 @@ export default class DayPicker extends Vue {
   private isSelectorVisible = false;
   
   private get dateForSelector(){
-    return this.selectedDate.format(this.SELECTOR_DATE_FORMAT);
+    return this.selectedDate && this.selectedDate.format(this.SELECTOR_DATE_FORMAT);
   }
 
   private set dateForSelector(val){    
@@ -40,7 +40,7 @@ export default class DayPicker extends Vue {
   }
 
   private get dateForTextbox(): string{
-    return this.selectedDate.format(this.TEXTBOX_DATE_FORMAT);
+    return this.selectedDate && this.selectedDate.format(this.TEXTBOX_DATE_FORMAT);
   }
 
   private set dateForTextbox(val: string){
@@ -84,7 +84,7 @@ export default class DayPicker extends Vue {
 .day-selector {
   position: absolute;
   left: 0px;  
-  z-index: 1;
+  z-index: 10;
 }
 
 </style>

@@ -22,7 +22,6 @@ export abstract class CoreState {
 
 export interface RootState {
   version: string;
-  exampleStore: ExampleStore;
 }
 
 

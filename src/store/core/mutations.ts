@@ -34,6 +34,15 @@ export const mutations: MutationTree<CoreState> = {
       state.selected = state.models[0];
       state.selectedCopy = cloneDeep(state.selected);
     }
+  },
+
+  updateSelectedCopy(state, {propName, value}: {propName: string, value: string}){
+    if(!state.selectedCopy){
+      throw `Tried to update a store selectedCopy that was null. key=${propName}, value=${value}`;
+    }
+    else {
+      state.selectedCopy[propName] = value;
+    }
   }
 
 };
