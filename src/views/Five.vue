@@ -87,7 +87,7 @@
                 </div>
               </div>
 
-              <!-- <day-picker :selectedDate="dateOfBirth" @update:selectedDate="dateOfBirth=$event"/> -->
+              <day-picker :selectedDate="dateOfBirthForPicker" @update:selectedDate="dateOfBirthForPicker=$event"/>
 
               <div class="field">
                 <button class="button is-success" @click.prevent="onUpdate" :disabled="!selected">
@@ -146,6 +146,9 @@ export default class Three extends Vue {
     }
   })
   private dateOfBirth!: string;
+
+  @BindProp(StoreType.ExampleStore.toString(), {propName: 'dateOfBirth'})
+  private dateOfBirthForPicker!: moment.Moment;
 
   private onUpdate(){
     this.$store.dispatch(`${StoreType.ExampleStore}/save`);
