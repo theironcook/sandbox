@@ -8,9 +8,12 @@ import StoreSearch from '@/store/core/StoreSearch'
 import moment from 'moment';
 
 const models: Model[] = <Example[]>[
-  {id: '1', name: 'val one', shortName: 'v1', dateOfBirth: moment('8/1/1976')}, 
-  {id: '2', name: 'val two', shortName: 'v2', dateOfBirth: moment('1/21/2003')}, 
-  {id: '3', name: 'val three', shortName: 'v3', dateOfBirth: moment('6/8/2006')}];
+  {newId: 1, name: 'Randall', shortName: 'Randy', dateOfBirth: moment('8/1/1976'), weight: 110}, 
+  {newId: 2, name: 'Stephen', shortName: 'a', dateOfBirth: moment('1/21/2003'), weight: 67}, 
+  {newId: 3, name: 'Stephen', shortName: 'b', dateOfBirth: moment('6/8/2006'), weight: 160},
+  {newId: 4, name: 'Alex', shortName: 'Al', dateOfBirth: moment('6/9/2006'), weight: 140},
+  {newId: 4, name: 'Alex', shortName: 'Ali', dateOfBirth: moment('6/10/2006'), weight: 141}
+];
 
 export const state: CoreState = {
   models,

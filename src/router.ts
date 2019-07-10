@@ -6,6 +6,8 @@ import Two from './views/Two.vue'
 import Three from './views/Three.vue'
 import Four from './views/Four.vue'
 import Five from './views/Five.vue'
+import Six from './views/Six.vue'
+import Seven from './views/Seven.vue'
 
 Vue.use(Router)
 
@@ -42,6 +44,16 @@ export default new Router({
       path: '/five',
       name: 'five',
       component: Five
+    },
+    {
+      path: '/six',
+      name: 'six',
+      component: Six
+    },
+    {
+      path: '/seven',
+      name: 'seven',
+      component: Seven
     },
     {
       path: '/about',

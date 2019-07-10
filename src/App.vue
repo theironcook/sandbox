@@ -7,7 +7,9 @@
       <router-link to="/two">Two</router-link> |
       <router-link to="/three">Three</router-link> |
       <router-link to="/four">Four</router-link> | 
-      <router-link to="/five">Five</router-link> 
+      <router-link to="/five">Five</router-link> |
+      <router-link to="/six">Six</router-link> |
+      <router-link to="/seven">Seven</router-link> 
     </div>
     <router-view/>
     <p> x: {{x}}, y: {{y}}
