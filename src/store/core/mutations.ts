@@ -19,7 +19,16 @@ export const mutations: MutationTree<CoreState> = {
   update(state: any, updated: any) {
     const existing = state._storeSearch.findById(updated.id);
     Object.assign(existing, updated);
-  },  
+  },
+
+  updateSelectedCopy(state, {propName, value}: {propName: string, value: string}){
+    if(!state.selectedCopy){
+      throw `Tried to update a store selectedCopy that was null. key=${propName}, value=${value}`;
+    }
+    else {
+      (<any>state.selectedCopy)[propName] = value;
+    }
+  },
 
   delete(state, model: Model) {
     console.log('invoked core delete');
@@ -34,16 +43,6 @@ export const mutations: MutationTree<CoreState> = {
       state.selected = state.models[0];
       state.selectedCopy = cloneDeep(state.selected);
     }
-  },
-
-  updateSelectedCopy(state, {propName, value}: {propName: string, value: string}){
-    if(!state.selectedCopy){
-      throw `Tried to update a store selectedCopy that was null. key=${propName}, value=${value}`;
-    }
-    else {
-      state.selectedCopy[propName] = value;
-    }
   }
 
 };
-

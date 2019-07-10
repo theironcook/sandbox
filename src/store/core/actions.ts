@@ -22,11 +22,11 @@ const createFilterUrlParams = function(filter: string, page?: number): string{
   return params;
 };
 
-const loadPaginatedModels = async function({state, commit, preCommit, filter}: {state: CoreState, commit: Commit, preCommit?: Function, filter: string}): Promise<object[]>{  
+const loadPaginatedModels = async function({state, commit, preCommit, filter}: {state: CoreState, commit: Commit, preCommit: Function, filter: string}): Promise<object[]>{  
   const fetchedModels = [];
 
-  const firstResponse = await axios.get(`${state._url}?${createFilterUrlParams(filter)}`);
-  (<any>fetchedModels).push(...firstResponse.data.data);
+  const firstResponse: any = await axios.get(`${state._url}?${createFilterUrlParams(filter)}`);
+  fetchedModels.push(...firstResponse.data.data);
   // Allow a handler to perform a bulk load before data is commited to the store
   if(preCommit){
     // Bart todo - I doubt I need to await this call - better to not block root model loading
@@ -47,8 +47,8 @@ const loadPaginatedModels = async function({state, commit, preCommit, filter}: {
 
       // Kick off all of the bulk model loads to happen in parallel
       for(let pageIndex = 1; pageIndex * defaultMaxPageSize < paginationTotal; pageIndex++){
-        (<any>paginatedPromises).push(axios.get(`${state._url}?${createFilterUrlParams(filter, pageIndex+1)}`).then((response) => {            
-          (<any>fetchedModels).push(...response.data.data);
+        paginatedPromises.push(axios.get(`${state._url}?${createFilterUrlParams(filter, pageIndex+1)}`).then((response) => {            
+          fetchedModels.push(...response.data.data);
           if(preCommit){
             preCommit(response);
           }                        
@@ -68,36 +68,26 @@ const loadPaginatedModels = async function({state, commit, preCommit, filter}: {
 
 export const actions = {  
   
-  async save({commit, state}: {commit: Commit, state: CoreState},  model?: Model) : Promise<Model> {
-    if(!model){
-      model = state.selectedCopy;
-    }
-
-    if(model){
-      let response: any;
-      if(model.id){
-        response = await axios.put(`${state._url}/${model.id}`, model);
-        // The api might have added calculated fields so it's best to update the store
-        commit(`${state._storeName}/update`, response.data.data, {root: true});
-      }
-      else {
-        response = await axios.post(state._url, model);
-        commit(`${state._storeName}/addModels`, [response.data.data], {root: true});
-      }
-      
-      // Return the updated model in the store
-      return this.fetchModel({commit, state}, {id: model.id || response.data.data.id});
+  async save({commit, state}: {commit: Commit, state: CoreState}, model: Model = state.selectedCopy) : Promise<Model> {    
+    let response: any;
+    if(model.id){
+      response = await axios.put(`${state._url}/${model.id}`, model);
+      // The api might have added calculated fields so it's best to update the store
+      commit(`${state._storeName}/update`, response.data.data, {root: true});
     }
     else {
-      throw 'Tried to save but there was no selectedCopy to save in the store';
+      response = await axios.post(state._url, model);
+      commit(`${state._storeName}/addModels`, [response.data.data], {root: true});
     }
+    
+    // Return the updated model in the store
+    return this.fetchModel({commit, state}, {id: model.id || response.data.data.id});
   },
 
-  async delete({commit, state}: {commit: Commit, state: CoreState}, model: Model): Promise<void> {    
+  async delete({commit, state}: {commit: Commit, state: CoreState}, model: Model = state.selectedCopy): Promise<void> {    
     await axios.delete(`${state._url}/${model.id}`);
     commit('delete', model);
   },
-
 
 
   async fetchModel({commit, state}:{commit: Commit, state: CoreState}, {id}:{id: string}): Promise<Model>{
@@ -173,7 +163,7 @@ export const actions = {
     });
   },
 
-  async fetchModelsByFilter({commit, state}: {commit: Commit, state: CoreState}, {filter, preCommit}:{filter: string, preCommit?: Function}): Promise<Model[]>{
+  async fetchModelsByFilter({commit, state}: {commit: Commit, state: CoreState}, {filter, preCommit}:{filter: string, preCommit: Function}): Promise<Model[]>{
     if(!state._promiseStore.get(filter)){
       const loadPromise = state._promiseStore.create(filter);
       
@@ -224,12 +214,12 @@ export const actions = {
     return state._promiseStore.get(filter).promise;
   },
 
-  select({state, commit}, selected: Model): Promise<void>{
+  select({commit, state}: {commit: Commit, state: CoreState}, selected: Model): Promise<void>{
     commit(`${state._storeName}/select`, selected, {root: true});
     return Promise.resolve();
   },
 
-  updateSelectedCopy({state, commit}, tuple: {propName: string, value: any}): Promise<void> {    
+  updateSelectedCopy({commit, state}: {commit: Commit, state: CoreState}, tuple: {propName: string, value: any}): Promise<void> {    
     commit(`${state._storeName}/updateSelectedCopy`, tuple, {root: true});
     return Promise.resolve();
   }
